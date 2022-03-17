@@ -49,7 +49,6 @@
 @import '../blocks/popup/_opened/popup_opened.css';
 @import '../blocks/popup/__close-icon/popup__close-icon.css';
 @import '../blocks/popup/__form/popup__form.css';
-@import '../blocks/popup/__name/popup__name.css';
 @import '../blocks/popup/__save-btn/popup__save-btn.css';
-@import '../blocks/popup/__status/popup__status.css';
-@import '../blocks/popup/__title/poup__title.css';
+@import '../blocks/popup/__title/popup__title.css';
+@import '../blocks/popup/__input/popup__input.css';

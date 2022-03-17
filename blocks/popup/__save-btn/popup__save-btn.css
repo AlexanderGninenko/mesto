@@ -5,11 +5,19 @@
     background-color: #000;
     color: #fff;
     width: 100%;
-    font-family: Inter;
+    font-family: Inter, Arial, sans-serif;
     font-size: 18px;
     line-height: 22px;
     text-align: center;
     padding: 0;
     border-style: none;
     cursor: pointer;
+}
+
+@media screen and (max-width:680px) {
+    .popup__save-btn {
+        height: 46px;
+        font-size: 14px;
+        line-height: 17px;
+    }
 }
