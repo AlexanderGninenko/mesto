@@ -6,6 +6,7 @@
 @media screen and (max-width: 680px ) {
     .profile__name-wrapper { 
         padding-left: 16px;
+        max-width: 288px;
     }
 
 }
