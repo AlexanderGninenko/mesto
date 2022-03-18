@@ -27,7 +27,7 @@
 @import '../blocks/profile/__name/profile__name.css';
 @import '../blocks/profile/__status/profile__status.css';
 @import '../blocks/profile/__name-wrapper/profile__name-wrapper.css';
-
+@import '../blocks/profile/__wrapper/profile__wrapper.css';
 
 /*PHOTO-GRID*/
 @import '../blocks/photo-grid/photo-grid.css';
