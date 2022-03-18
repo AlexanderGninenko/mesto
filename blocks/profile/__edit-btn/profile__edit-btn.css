@@ -16,7 +16,8 @@
 
 @media screen and (max-width: 680px) {
     .profile__edit-btn {
-        min-width: 18px; 
+        min-width: 18px;
+        max-width: 18px;
         height: 18px;
     }
 }
