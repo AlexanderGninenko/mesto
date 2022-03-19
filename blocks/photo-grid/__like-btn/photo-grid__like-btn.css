@@ -8,4 +8,9 @@
     border: none;
     background-color: transparent;
     outline: none;
+    transition: .2s ease-in-out;
+}
+
+.photo-grid__like-btn:hover {
+    opacity: .5;
 }
