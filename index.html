@@ -22,7 +22,8 @@
                 <div class="profile__wrapper">
                     <div class="profile__name-wrapper">
                         <h1 class="profile__name">Жак-Ив Кусто</h1>
-                        <button type="button" class="profile__edit-btn opacity" aria-label="Редактировать профиль"></button>
+                        <button type="button" class="profile__edit-btn opacity"
+                            aria-label="Редактировать профиль"></button>
                     </div>
 
                     <p class="profile__status">Исследователь океана</p>
@@ -97,6 +98,15 @@
     <footer class="footer">
         <p class="footer__text">© 2022 Mesto Russia</p>
     </footer>
+    <template id="card-template">
+        <li class="photo-grid__item">
+            <img src="./images/dombai.jpg" alt="Домбай" class="photo-grid__image">
+            <div class="photo-grid__description">
+                <h2 class="photo-grid__title">Домбай</h2>
+                <button class="photo-grid__like-btn" type="button"></button>
+            </div>
+        </li>
+    </template>
     <script src="./script/index.js"></script>
 
 </body>
