@@ -1,0 +1,14 @@
+.photo-grid__delete-btn {
+    background-image: url('../../../images/delete_btn.svg');
+    width: 18px;
+    height: 19px;
+    cursor: pointer;
+    background-repeat: no-repeat;
+    background-position: center;
+    border: none;
+    background-color: transparent;
+    outline: none;
+    position: absolute;
+    top: 20px;
+    left: calc(282px - 18px - 20px);
+}

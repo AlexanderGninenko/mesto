@@ -37,6 +37,7 @@
 @import '../blocks/photo-grid/__wrapper/photo-grid__wrapper.css';
 @import '../blocks/photo-grid/__like-btn/photo-grid__like-btn.css';
 @import '../blocks/photo-grid/__like-btn/_active/photo-grid__like-btn_active.css';
+@import '../blocks/photo-grid/__delete-btn/photo-grid__delete-btn.css';
 
 /*FOOTER*/
 @import '../blocks/footer/footer.css';

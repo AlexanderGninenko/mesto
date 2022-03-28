@@ -43,7 +43,9 @@ const createCard = (card) => {
     let photoImageAltName = cardItem.querySelector('.photo-grid__image');
     let cardItemTitle = cardItem.querySelector('.photo-grid__title');
     const likeBtn = cardItem.querySelector('.photo-grid__like-btn');
+    const deleteBtn = cardItem.querySelector('.photo-grid__delete-btn');
     likeBtn.addEventListener('click', isLiked);
+    deleteBtn.addEventListener('click', deleteCard);
     cardItemTitle.textContent = card.name;
     photoImageLink.src = card.link;
     photoImageAltName.alt = card.name;
@@ -55,6 +57,8 @@ const renderCard = (card) => {
     cardsContainer.prepend(card);
 
 }
+
+const deleteCard = e => e.target.closest('.photo-grid__item').remove();
 
 
 const showProfilePopup =()=> {
