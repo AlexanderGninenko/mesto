@@ -12,3 +12,7 @@
     top: 20px;
     left: calc(282px - 18px - 20px);
 }
+
+.photo-grid__delete-btn:hover {
+    opacity: .6;
+}
