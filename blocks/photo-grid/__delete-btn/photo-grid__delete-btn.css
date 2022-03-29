@@ -11,4 +11,9 @@
     position: absolute;
     top: 20px;
     left: calc(282px - 18px - 20px);
+    transition: .2s;
+}
+
+.photo-grid__delete-btn:hover {
+    opacity: .6;
 }

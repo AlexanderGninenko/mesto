@@ -37,18 +37,26 @@
 
         </section>
     </main>
-    <div class="popup">
+    <div class="popup popup_profile_form">
         <div class="popup__container">
-
-            <form class="popup__form" name="popupForm">
-
+            <form class="popup__form" name="popupProfileForm">
                 <h2 class="popup__title">Редактировать профиль</h2>
                 <input class="popup__input popup__input_profile_name" type="text" name="username">
                 <input class="popup__input popup__input_profile_status" type="text" name="statusname">
-                <button type="submit" class="popup__save-btn">Сохранить</button>
+                <button type="submit" class="popup__save-btn popup__save-btn_profile">Сохранить</button>
             </form>
             <button type="button" class="popup__close-icon opacity"></button>
-
+        </div>
+    </div>
+    <div class="popup popup_place_form">
+        <div class="popup__container">
+            <form class="popup__form " name="popupPlaceForm">
+                <h2 class="popup__title">Новое место</h2>
+                <input class="popup__input popup__input_place_name" type="text" name="username" placeholder="Название">
+                <input class="popup__input popup__input_place_link" type="text" name="statusname" placeholder="Ссылка на картинку">
+                <button type="submit" class="popup__save-btn">Создать</button>
+            </form>
+            <button type="button" class="popup__close-icon opacity"></button>
         </div>
     </div>
     <footer class="footer">
