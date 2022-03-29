@@ -62,10 +62,13 @@ const renderNewCard = (e) => {
   closePopup(placePopup)();
 };
 
-const openPopup = (popup) => () => {
-  popup.classList.add("popup_opened");
+const showProfileInfo = () => {
   popupName.value = profileName.textContent;
   popupStatus.value = profileStatus.textContent;
+}
+
+const openPopup = (popup) => () => {
+  popup.classList.add('popup_opened');
   const closeBtn = popup.querySelector(".popup__close-icon");
   closeBtn.addEventListener("click", closePopup(popup));
 };
@@ -86,7 +89,15 @@ const saveProfileInfo = (e) => {
 const isLiked = e => e.target.classList.toggle("photo-grid__like-btn_active");
 
 addNewCardBtn.addEventListener("click", openPopup(placePopup));
-editBtn.addEventListener("click", openPopup(profilePopup));
+
+
+
+editBtn.addEventListener("click", () => {
+  openPopup(profilePopup)();
+  showProfileInfo();
+});
+
+
 profilePopup.addEventListener("submit", saveProfileInfo);
 placePopup.addEventListener("submit", renderNewCard);
 
