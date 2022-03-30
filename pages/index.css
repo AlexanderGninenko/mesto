@@ -45,6 +45,7 @@
 
 /*POPUP*/
 @import '../blocks/popup/popup.css';
+@import '../blocks/popup/_dark-theme/popup_dark_theme.css';
 @import '../blocks/popup/__container/popup__container.css';
 @import '../blocks/popup/_opened/popup_opened.css';
 @import '../blocks/popup/__close-icon/popup__close-icon.css';
@@ -52,3 +53,6 @@
 @import '../blocks/popup/__save-btn/popup__save-btn.css';
 @import '../blocks/popup/__title/popup__title.css';
 @import '../blocks/popup/__input/popup__input.css';
+@import '../blocks/popup/__image-wrapper/popup__image-wrapper.css';
+@import '../blocks/popup/__image/popup__image.css';
+@import '../blocks/popup/__image-description/popup__image-description.css';

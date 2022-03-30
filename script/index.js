@@ -37,20 +37,23 @@ const placeLinkInput = document.querySelector(".popup__input_place_link");
 const profilePopup = document.querySelector(".popup_profile_form");
 const placePopup = document.querySelector(".popup_place_form");
 const addNewCardBtn = document.querySelector(".profile__add-btn");
+const imagePopup = document.querySelector('.popup_image_form');
+const image = document.querySelector('.popup__image');
+const imageDescription = document.querySelector('.popup__image-description');
 
 const createCard = (card) => {
   const template = document.querySelector("#card-template").content;
   const cardItem = template.querySelector(".photo-grid__item").cloneNode(true);
-  let photoImageLink = cardItem.querySelector(".photo-grid__image");
-  let photoImageAltName = cardItem.querySelector(".photo-grid__image");
+  let photoImage = cardItem.querySelector(".photo-grid__image");
   let cardItemTitle = cardItem.querySelector(".photo-grid__title");
   const likeBtn = cardItem.querySelector(".photo-grid__like-btn");
   const deleteBtn = cardItem.querySelector(".photo-grid__delete-btn");
   likeBtn.addEventListener("click", isLiked);
   deleteBtn.addEventListener("click", deleteCard);
   cardItemTitle.textContent = card.name;
-  photoImageLink.src = card.link;
-  photoImageAltName.alt = card.name;
+  photoImage.src = card.link;
+  photoImage.alt = card.name;
+  photoImage.addEventListener('click', showImage );
 
   return cardItem;
 };
@@ -65,6 +68,14 @@ const renderNewCard = (e) => {
 const showProfileInfo = () => {
   popupName.value = profileName.textContent;
   popupStatus.value = profileStatus.textContent;
+}
+
+const showImage = (e) => {
+  console.log(e.target);
+  image.src = e.target.src;
+  image.alt = e.target.alt;
+  imageDescription.textContent = e.target.alt;
+  openPopup(imagePopup)();
 }
 
 const openPopup = (popup) => () => {
@@ -96,6 +107,8 @@ editBtn.addEventListener("click", () => {
   openPopup(profilePopup)();
   showProfileInfo();
 });
+
+
 
 
 profilePopup.addEventListener("submit", saveProfileInfo);
