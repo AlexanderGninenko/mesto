@@ -26,18 +26,23 @@ const initialCards = [
 ];
 
 const cardsContainer = document.querySelector(".photo-grid__wrapper");
-const editBtn = document.querySelector(".profile__edit-btn");
 const popup = document.querySelector(".popup");
-const popupName = document.querySelector(".popup__input_profile_name");
-const popupStatus = document.querySelector(".popup__input_profile_status");
+
 const profileName = document.querySelector(".profile__name");
 const profileStatus = document.querySelector(".profile__status");
+
 const placeNameInput = document.querySelector(".popup__input_place_name");
 const placeLinkInput = document.querySelector(".popup__input_place_link");
+const popupProfileName = document.querySelector(".popup__input_profile_name");
+const popupProfileStatus = document.querySelector(".popup__input_profile_status");
+
 const profilePopup = document.querySelector(".popup_profile_form");
 const placePopup = document.querySelector(".popup_place_form");
-const addNewCardBtn = document.querySelector(".profile__add-btn");
 const imagePopup = document.querySelector('.popup_image_form');
+
+const addNewCardBtn = document.querySelector(".profile__add-btn");
+const editProfileInfoBtn = document.querySelector(".profile__edit-btn");
+
 const image = document.querySelector('.popup__image');
 const imageDescription = document.querySelector('.popup__image-description');
 
@@ -53,7 +58,11 @@ const createCard = (card) => {
   cardItemTitle.textContent = card.name;
   photoImage.src = card.link;
   photoImage.alt = card.name;
-  photoImage.addEventListener('click', showImage );
+  
+  photoImage.addEventListener('click', (e) => {
+    showImage(e);
+    openPopup(imagePopup)();
+  });
 
   return cardItem;
 };
@@ -61,21 +70,19 @@ const createCard = (card) => {
 const renderNewCard = (e) => {
   e.preventDefault();
   const newCard = { name: placeNameInput.value, link: placeLinkInput.value };
-  renderCard(createCard(newCard));
+  renderCardfromArray(createCard(newCard));
   closePopup(placePopup)();
 };
 
 const showProfileInfo = () => {
-  popupName.value = profileName.textContent;
-  popupStatus.value = profileStatus.textContent;
+  popupProfileName.value = profileName.textContent;
+  popupProfileStatus.value = profileStatus.textContent;
 }
 
 const showImage = (e) => {
-  console.log(e.target);
   image.src = e.target.src;
   image.alt = e.target.alt;
   imageDescription.textContent = e.target.alt;
-  openPopup(imagePopup)();
 }
 
 const openPopup = (popup) => () => {
@@ -86,14 +93,14 @@ const openPopup = (popup) => () => {
 
 const closePopup = popup => () => popup.classList.remove("popup_opened");
 
-const renderCard = card => cardsContainer.prepend(card);
+const renderCardfromArray = card => cardsContainer.prepend(card);
 
 const deleteCard = e => e.target.closest(".photo-grid__item").remove();
 
 const saveProfileInfo = (e) => {
   e.preventDefault();
-  profileName.textContent = popupName.value;
-  profileStatus.textContent = popupStatus.value;
+  profileName.textContent = popupProfileName.value;
+  profileStatus.textContent = popupProfileStatus.value;
   closePopup(profilePopup)();
 };
 
@@ -101,17 +108,12 @@ const isLiked = e => e.target.classList.toggle("photo-grid__like-btn_active");
 
 addNewCardBtn.addEventListener("click", openPopup(placePopup));
 
-
-
-editBtn.addEventListener("click", () => {
+editProfileInfoBtn.addEventListener("click", () => {
   openPopup(profilePopup)();
   showProfileInfo();
 });
 
-
-
-
 profilePopup.addEventListener("submit", saveProfileInfo);
 placePopup.addEventListener("submit", renderNewCard);
 
-initialCards.forEach((card) => renderCard(createCard(card)));
+initialCards.forEach((card) => renderCardfromArray(createCard(card)));
