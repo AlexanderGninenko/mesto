@@ -25,6 +25,9 @@ const initialCards = [
   },
 ];
 
+const template = document.querySelector("#card-template").content;
+
+
 const cardsContainer = document.querySelector(".photo-grid__wrapper");
 const popup = document.querySelector(".popup");
 
@@ -40,17 +43,19 @@ const profilePopup = document.querySelector(".popup_profile_form");
 const placePopup = document.querySelector(".popup_place_form");
 const imagePopup = document.querySelector('.popup_image_form');
 
-const addNewCardBtn = document.querySelector(".profile__add-btn");
+const cardAddBtn = document.querySelector(".profile__add-btn");
 const editProfileInfoBtn = document.querySelector(".profile__edit-btn");
 
 const image = document.querySelector('.popup__image');
 const imageDescription = document.querySelector('.popup__image-description');
 
+const closeBtn = document.querySelectorAll(".popup__close-icon");
+
+
 const createCard = (card) => {
-  const template = document.querySelector("#card-template").content;
   const cardItem = template.querySelector(".photo-grid__item").cloneNode(true);
-  let photoImage = cardItem.querySelector(".photo-grid__image");
-  let cardItemTitle = cardItem.querySelector(".photo-grid__title");
+  const photoImage = cardItem.querySelector(".photo-grid__image");
+  const cardItemTitle = cardItem.querySelector(".photo-grid__title");
   const likeBtn = cardItem.querySelector(".photo-grid__like-btn");
   const deleteBtn = cardItem.querySelector(".photo-grid__delete-btn");
   likeBtn.addEventListener("click", isLiked);
@@ -61,7 +66,7 @@ const createCard = (card) => {
   
   photoImage.addEventListener('click', (e) => {
     showImage(e);
-    openPopup(imagePopup)();
+    togglePopup(imagePopup)();
   });
 
   return cardItem;
@@ -70,8 +75,11 @@ const createCard = (card) => {
 const renderNewCard = (e) => {
   e.preventDefault();
   const newCard = { name: placeNameInput.value, link: placeLinkInput.value };
-  renderCardfromArray(createCard(newCard));
-  closePopup(placePopup)();
+  renderCardFromArray(createCard(newCard));
+  placeNameInput.value = null;
+  placeLinkInput.value = null;
+  togglePopup(placePopup)();
+ 
 };
 
 const showProfileInfo = () => {
@@ -85,15 +93,9 @@ const showImage = (e) => {
   imageDescription.textContent = e.target.alt;
 }
 
-const openPopup = (popup) => () => {
-  popup.classList.add('popup_opened');
-  const closeBtn = popup.querySelector(".popup__close-icon");
-  closeBtn.addEventListener("click", closePopup(popup));
-};
+const togglePopup = popup => () => popup.classList.toggle("popup_opened");
 
-const closePopup = popup => () => popup.classList.remove("popup_opened");
-
-const renderCardfromArray = card => cardsContainer.prepend(card);
+const renderCardFromArray = card => cardsContainer.prepend(card);
 
 const deleteCard = e => e.target.closest(".photo-grid__item").remove();
 
@@ -101,19 +103,24 @@ const saveProfileInfo = (e) => {
   e.preventDefault();
   profileName.textContent = popupProfileName.value;
   profileStatus.textContent = popupProfileStatus.value;
-  closePopup(profilePopup)();
+  togglePopup(profilePopup)();
 };
 
 const isLiked = e => e.target.classList.toggle("photo-grid__like-btn_active");
 
-addNewCardBtn.addEventListener("click", openPopup(placePopup));
+cardAddBtn.addEventListener("click", togglePopup(placePopup));
 
 editProfileInfoBtn.addEventListener("click", () => {
-  openPopup(profilePopup)();
+  togglePopup(profilePopup)();
   showProfileInfo();
 });
+
+closeBtn.forEach(btn => btn.addEventListener("click", ()=>{ 
+  const activePopup = document.querySelector('.popup_opened');
+  togglePopup(activePopup)();
+}));
 
 profilePopup.addEventListener("submit", saveProfileInfo);
 placePopup.addEventListener("submit", renderNewCard);
 
-initialCards.forEach((card) => renderCardfromArray(createCard(card)));
+initialCards.forEach(card => renderCardFromArray(createCard(card)));
