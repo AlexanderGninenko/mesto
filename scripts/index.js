@@ -81,7 +81,8 @@ const renderNewCard = (e) => {
   e.preventDefault();
   const newCard = { name: placeFormName.value, link: placeFormLink.value };
   renderCardFromArray(createCard(newCard));
-  placeForm.reset();
+  // placeForm.reset();
+  
   togglePopup(placePopup)();
   
 };
@@ -97,7 +98,10 @@ const showImage = (e) => {
   imageDescription.textContent = e.target.alt;
 };
 
-const togglePopup = (popup) => () => popup.classList.toggle("popup_opened");
+const togglePopup = (popup) => () => {
+  popup.classList.toggle("popup_opened");
+  resetValidation(settings);
+}
 
 const renderCardFromArray = (card) => cardsContainer.prepend(card);
 
@@ -143,70 +147,6 @@ document.addEventListener("keydown", (e) => {
   }
 });
 
-/////////////////////////////////////////////////////////////////
-
-const showInputError = (formElement, inputElement, errorMessage, settings) => {
-  const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
-  errorElement.textContent = errorMessage;
-  errorElement.classList.add(settings.errorClass);
-};
-
-const hideInputError = (formElement, inputElement, settings) => {
-  const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
-  errorElement.classList.remove(settings.errorClass);
-  errorElement.textContent = '';
-};
-
-const checkInputValidity = (formElement, inputElement, settings) => {
-  if (!inputElement.validity.valid) {
-    showInputError(formElement, inputElement, inputElement.validationMessage, settings);
-  } else {
-    hideInputError(formElement, inputElement, settings);
-  }
-};
-
-const hasInvalidInput = (inputList) => {
-    return inputList.some((inputElement) => {
-      return !inputElement.validity.valid;
-  })
-}
-
-const toggleButtonState = (inputList, buttonElement, settings) => {
-  if (hasInvalidInput(inputList)) {
-    buttonElement.classList.add(settings.inactiveButtonClass);
-    buttonElement.disabled = true;
-    console.log(settings);
-  } else {
-    buttonElement.classList.remove(settings.inactiveButtonClass);
-    buttonElement.disabled = false;
-
-  }
-}
-
-const setEventListeners = (formElement, settings) => {
-  const inputList = Array.from(formElement.querySelectorAll(settings.inputSelector));
-  const buttonElement = formElement.querySelector(settings.submitButtonSelector);
-  toggleButtonState(inputList, buttonElement, settings);
-  inputList.forEach((inputElement, settings) => {
-    inputElement.addEventListener('input', function () {
-      checkInputValidity(formElement, inputElement, settings);
-      toggleButtonState(inputList, buttonElement, settings);
-    });
-  });
-};
-
-const enableValidation = (settings) => {
-  const formList = Array.from(document.querySelectorAll(settings.formSelector));
-  formList.forEach((formElement) => {
-    formElement.addEventListener('submit', function (evt) {
-      evt.preventDefault();
-    });
-   setEventListeners(formElement, settings);
-  });
-};
-
-
-/////////////////////////////////////////////////////////////////////////////
 
 popup.forEach((popup) =>
   popup.addEventListener("mousedown", closeOnOverlayClick)
@@ -214,13 +154,3 @@ popup.forEach((popup) =>
 
 initialCards.forEach((card) => renderCardFromArray(createCard(card)));
 
-const settings = {
-  formSelector: '.popup__form',
-  inputSelector: '.popup__input',
-  submitButtonSelector: '.popup__save-btn',
-  inactiveButtonClass: 'popup__save-btn_disabled',
-  errorClass: 'popup__input-error_active'
-}
-
-
-enableValidation(settings);
