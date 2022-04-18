@@ -55,6 +55,8 @@
 @import '../blocks/popup/__title/popup__title.css';
 @import '../blocks/popup/__input/popup__input.css';
 @import '../blocks/popup/__input-error/popup__input-error.css';
+@import '../blocks/popup/__input-error/_active/popup__input-error_active.css';
+
 @import '../blocks/popup/__image-wrapper/popup__image-wrapper.css';
 @import '../blocks/popup/__image/popup__image.css';
 @import '../blocks/popup/__image-description/popup__image-description.css';

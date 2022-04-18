@@ -45,7 +45,6 @@ const placeFormLink = placeForm.elements.placeFormLink;
 const profileFormName = profileForm.elements.profileFormName;
 const profileFormStatus = profileForm.elements.profileFormStatus;
 
-const inputError = (`.${formInput.id}-error`);
 
 const cardAddBtn = document.querySelector(".profile__add-btn");
 const editProfileInfoBtn = document.querySelector(".profile__edit-btn");
@@ -84,7 +83,7 @@ const renderNewCard = (e) => {
   renderCardFromArray(createCard(newCard));
   placeForm.reset();
   togglePopup(placePopup)();
-  toggleBtnState(false, placeSaveBtn);
+  
 };
 
 const showProfileInfo = () => {
@@ -133,19 +132,6 @@ const closeOnOverlayClick = (e) => {
   }
 };
 
-const toggleBtnState = (isFormValid, btn) => {
-  if (isFormValid) {
-    btn.removeAttribute("disabled");
-    btn.classList.remove("popup__save-btn_disabled");
-  } else {
-    btn.setAttribute("disabled", true);
-    btn.classList.add("popup__save-btn_disabled");
-  }
-};
-
-const showInputError = () => {
-
-}
 
 profileForm.addEventListener("submit", saveProfileInfo);
 
@@ -157,22 +143,87 @@ document.addEventListener("keydown", (e) => {
   }
 });
 
-profileForm.addEventListener("input", () => {
-  toggleBtnState(isInputValid(profileFormName, profileFormStatus), profileSaveBtn);
-});
+/////////////////////////////////////////////////////////////////
 
-placeForm.addEventListener("input", () => {
-  toggleBtnState(isInputValid(placeFormName, placeFormLink), placeSaveBtn);
-});
+const showInputError = (formElement, inputElement, errorMessage, settings) => {
+  const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
+  errorElement.textContent = errorMessage;
+  errorElement.classList.add(settings.errorClass);
+};
 
-const isInputValid = (formName, formStatus) => {
-  if (formName.validity.valid && formStatus.validity.valid) {
-    return true
-  } else return false
+const hideInputError = (formElement, inputElement, settings) => {
+  const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
+  errorElement.classList.remove(settings.errorClass);
+  errorElement.textContent = '';
+};
+
+const checkInputValidity = (formElement, inputElement, settings) => {
+  if (!inputElement.validity.valid) {
+    showInputError(formElement, inputElement, inputElement.validationMessage, settings);
+  } else {
+    hideInputError(formElement, inputElement, settings);
+  }
+};
+
+const hasInvalidInput = (inputList) => {
+    return inputList.some((inputElement) => {
+      return !inputElement.validity.valid;
+  })
 }
+
+const toggleButtonState = (inputList, buttonElement, settings) => {
+  if (hasInvalidInput(inputList)) {
+    buttonElement.classList.add(settings.inactiveButtonClass);
+    buttonElement.disabled = true;
+    console.log(settings);
+  } else {
+    buttonElement.classList.remove(settings.inactiveButtonClass);
+    console.log(settings.inactiveButtonClass);
+
+    buttonElement.disabled = false;
+
+  }
+}
+
+const setEventListeners = (formElement, settings) => {
+  const inputList = Array.from(formElement.querySelectorAll(settings.inputSelector));
+  const buttonElement = formElement.querySelector(settings.submitButtonSelector);
+  toggleButtonState(inputList, buttonElement, settings);
+  inputList.forEach((inputElement, settings) => {
+    inputElement.addEventListener('input', function () {
+      checkInputValidity(formElement, inputElement, settings);
+      toggleButtonState(inputList, buttonElement, settings);
+    });
+  });
+};
+
+const enableValidation = (settings) => {
+  const formList = Array.from(document.querySelectorAll(settings.formSelector));
+  formList.forEach((formElement) => {
+    formElement.addEventListener('submit', function (evt) {
+      evt.preventDefault();
+    });
+   setEventListeners(formElement, settings);
+  });
+};
+
+
+/////////////////////////////////////////////////////////////////////////////
 
 popup.forEach((popup) =>
   popup.addEventListener("mousedown", closeOnOverlayClick)
 );
 
 initialCards.forEach((card) => renderCardFromArray(createCard(card)));
+
+const settings = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__save-btn',
+  inactiveButtonClass: 'popup__save-btn_disabled',
+  errorClass: 'popup__input-error_active'
+}
+
+console.log(settings.formSelector)
+
+enableValidation(settings);
