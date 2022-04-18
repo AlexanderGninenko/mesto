@@ -4,11 +4,13 @@ const settings = {
   inputErrorClass: ".popup__input-error",
   submitButtonSelector: ".popup__save-btn",
   inactiveButtonClass: "popup__save-btn_disabled",
+  inputErrorClassActive: 'popup__input_type_error',
   errorClass: "popup__input-error_active",
 };
 
 const showInputError = (formElement, inputElement, errorMessage, config) => {
   const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
+  inputElement.classList.add(config.inputErrorClassActive);
   errorElement.textContent = errorMessage;
   errorElement.classList.add(config.errorClass);
 };
@@ -16,6 +18,7 @@ const showInputError = (formElement, inputElement, errorMessage, config) => {
 const hideInputError = (formElement, inputElement, config) => {
   const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
   errorElement.classList.remove(config.errorClass);
+  inputElement.classList.remove(config.inputErrorClassActive);
   errorElement.textContent = "";
 };
 
@@ -64,10 +67,15 @@ const enableValidation = (config) => {
 };
 
 const resetValidation = (config) => {
-  const errorSpans = Array.from(
-    document.querySelectorAll(config.inputErrorClass)
-  );
-  errorSpans.forEach((span) => (span.textContent = ""));
+  const errorSpans = Array.from(document.querySelectorAll(config.inputErrorClass));
+  errorSpans.forEach((span) => {
+    span.textContent = "";
+  });
 };
+
+const enableSubmitButton = (button, config) => {
+  button.classList.remove(config.inactiveButtonClass);
+  button.disabled = false;
+}
 
 enableValidation(settings);
