@@ -101,13 +101,13 @@ const handleImage = (e) => {
 
 const openPopup = (popup) => {
   popup.classList.add("popup_opened");
-  popup.addEventListener("keydown", handleCloseOnEscapeKey);
+  document.addEventListener("keydown", handleCloseOnEscapeKey);
   popup.addEventListener("mousedown", closeOnOverlayClick);
 }
 
 const closePopup = (popup) => {
   popup.classList.remove("popup_opened");
-  popup.removeEventListener("keydown", handleCloseOnEscapeKey);
+  document.removeEventListener("keydown", handleCloseOnEscapeKey);
   popup.removeEventListener("mousedown", closeOnOverlayClick);
 }
 
@@ -140,7 +140,6 @@ const closeOnOverlayClick = (e) => {
 
 const handleCloseOnEscapeKey = (e) => {
   if (e.key === "Escape") {
-    console.log('sdgfsg');
     closePopup(document.querySelector(".popup_opened"));
   }
 }
@@ -149,7 +148,7 @@ cardAddButton.addEventListener("click", () => openPopup(placePopup));
 
 profileEditInfoButton.addEventListener("click", () => {
   handleProfileInfo();
-  setEventListeners(profileFormName, settings);
+  // setEventListeners(profileFormName, settings);
   openPopup(profilePopup);
 });
 profileForm.addEventListener("submit", saveProfileInfo);
