@@ -178,8 +178,6 @@ const toggleButtonState = (inputList, buttonElement, settings) => {
     console.log(settings);
   } else {
     buttonElement.classList.remove(settings.inactiveButtonClass);
-    console.log(settings.inactiveButtonClass);
-
     buttonElement.disabled = false;
 
   }
@@ -224,6 +222,5 @@ const settings = {
   errorClass: 'popup__input-error_active'
 }
 
-console.log(settings.formSelector)
 
 enableValidation(settings);
