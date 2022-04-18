@@ -1,3 +1,5 @@
+
+
 const initialCards = [
   {
     name: "Архыз",
@@ -70,7 +72,7 @@ const createCard = (card) => {
 
   photoImage.addEventListener("click", (e) => {
     handleImage(e);
-    openPopup(imagePopup)();
+    openPopup(imagePopup);
   });
 
   return cardItem;
@@ -81,7 +83,7 @@ const handleAddNewCard = (e) => {
   e.preventDefault();
   const newCard = { name: placeFormName.value, link: placeFormLink.value };
   renderCardFromArray(createCard(newCard));
-  closePopup(placePopup)();
+  closePopup(placePopup);
   placeForm.reset();
 };
 
@@ -96,18 +98,14 @@ const handleImage = (e) => {
   imageDescription.textContent = e.target.alt;
 };
 
-// const togglePopup = (popup) => () => {
-//   popup.classList.toggle("popup_opened");
-//   resetValidation(settings);
-// }
 
-const openPopup = (popup) => () => {
+const openPopup = (popup) => {
   popup.classList.add("popup_opened");
   popup.addEventListener("keydown", handleCloseOnEscapeKey);
   popup.addEventListener("mousedown", closeOnOverlayClick);
 }
 
-const closePopup = (popup) => () => {
+const closePopup = (popup) => {
   popup.classList.remove("popup_opened");
   popup.removeEventListener("keydown", handleCloseOnEscapeKey);
   popup.removeEventListener("mousedown", closeOnOverlayClick);
@@ -121,7 +119,7 @@ const saveProfileInfo = (e) => {
   e.preventDefault();
   profileName.textContent = profileFormName.value;
   profileStatus.textContent = profileFormStatus.value;
-  closePopup(profilePopup)();
+  closePopup(profilePopup);
 };
 
 const handleLikeClick = (e) => e.target.classList.toggle("photo-grid__like-btn_active");
@@ -130,35 +128,29 @@ const handleLikeClick = (e) => e.target.classList.toggle("photo-grid__like-btn_a
 closeButtonList.forEach((button) =>
     button.addEventListener("click", (e) => {
     const activePopup = document.querySelector(".popup_opened");
-    closePopup(activePopup)();
+    closePopup(activePopup);
   })
 );
 
 const closeOnOverlayClick = (e) => {
-  if (e.target.classList.contains("popup_opened")) {
-    closePopup(e.target)();
+  if (e.target === e.currentTarget) {
+    closePopup(e.target);
   }
 };
 
 const handleCloseOnEscapeKey = (e) => {
   if (e.key === "Escape") {
     console.log('sdgfsg');
-    closePopup(document.querySelector(".popup_opened"))();
+    closePopup(document.querySelector(".popup_opened"));
   }
 }
 
-// const enableProfileSaveButton = () => {
-//   profileSaveButton.classList.remove('popup__save-btn_disabled');
-//   profileSaveButton.disabled = false;
-// }
-
-cardAddButton.addEventListener("click", openPopup(placePopup));
+cardAddButton.addEventListener("click", () => openPopup(placePopup));
 
 profileEditInfoButton.addEventListener("click", () => {
-  // enableProfileSaveButton();
-  openPopup(profilePopup)();
   handleProfileInfo();
-  
+  setEventListeners(profileFormName, settings);
+  openPopup(profilePopup);
 });
 profileForm.addEventListener("submit", saveProfileInfo);
 
