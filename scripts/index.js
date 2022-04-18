@@ -144,11 +144,14 @@ const handleCloseOnEscapeKey = (e) => {
   }
 }
 
-cardAddButton.addEventListener("click", () => openPopup(placePopup));
+cardAddButton.addEventListener("click", () => {
+  resetValidation(settings);
+  openPopup(placePopup);
+});
 
 profileEditInfoButton.addEventListener("click", () => {
   handleProfileInfo();
-  // setEventListeners(profileFormName, settings);
+  resetValidation(settings);
   openPopup(profilePopup);
 });
 profileForm.addEventListener("submit", saveProfileInfo);
