@@ -81,8 +81,6 @@ const renderNewCard = (e) => {
   e.preventDefault();
   const newCard = { name: placeFormName.value, link: placeFormLink.value };
   renderCardFromArray(createCard(newCard));
-  // placeForm.reset();
-  
   togglePopup(placePopup)();
   
 };
@@ -119,8 +117,10 @@ const isLiked = (e) => e.target.classList.toggle("photo-grid__like-btn_active");
 cardAddBtn.addEventListener("click", togglePopup(placePopup));
 
 editProfileInfoBtn.addEventListener("click", () => {
+  enableProfileSaveBtn();
   togglePopup(profilePopup)();
   showProfileInfo();
+  
 });
 
 closeBtn.forEach((btn) =>
@@ -135,6 +135,11 @@ const closeOnOverlayClick = (e) => {
     togglePopup(e.target)();
   }
 };
+
+const enableProfileSaveBtn = () => {
+  profileSaveBtn.classList.remove('popup__save-btn_disabled');
+  profileSaveBtn.disabled = false;
+}
 
 
 profileForm.addEventListener("submit", saveProfileInfo);
