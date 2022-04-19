@@ -18,7 +18,6 @@ const placeFormLink = placeForm.elements.placeFormLink;
 const profileFormName = profileForm.elements.profileFormName;
 const profileFormStatus = profileForm.elements.profileFormStatus;
 
-
 const cardAddButton = document.querySelector(".profile__add-btn");
 const profileEditInfoButton = document.querySelector(".profile__edit-btn");
 
@@ -49,7 +48,6 @@ const createCard = (card) => {
   return cardItem;
 };
 
-
 const handleAddNewCard = (e) => {
   e.preventDefault();
   const newCard = { name: placeFormName.value, link: placeFormLink.value };
@@ -69,18 +67,17 @@ const handleImage = (e) => {
   imageDescription.textContent = e.target.alt;
 };
 
-
 const openPopup = (popup) => {
   popup.classList.add("popup_opened");
   document.addEventListener("keydown", handleCloseOnEscapeKey);
   popup.addEventListener("mousedown", closeOnOverlayClick);
-}
+};
 
 const closePopup = (popup) => {
   popup.classList.remove("popup_opened");
   document.removeEventListener("keydown", handleCloseOnEscapeKey);
   popup.removeEventListener("mousedown", closeOnOverlayClick);
-}
+};
 
 const renderCardFromArray = (card) => cardsContainer.prepend(card);
 
@@ -93,11 +90,11 @@ const saveProfileInfo = (e) => {
   closePopup(profilePopup);
 };
 
-const handleLikeClick = (e) => e.target.classList.toggle("photo-grid__like-btn_active");
-
+const handleLikeClick = (e) =>
+  e.target.classList.toggle("photo-grid__like-btn_active");
 
 closeButtonList.forEach((button) =>
-    button.addEventListener("click", (e) => {
+  button.addEventListener("click", (e) => {
     const activePopup = document.querySelector(".popup_opened");
     closePopup(activePopup);
   })
@@ -113,16 +110,16 @@ const handleCloseOnEscapeKey = (e) => {
   if (e.key === "Escape") {
     closePopup(document.querySelector(".popup_opened"));
   }
-}
+};
 
 cardAddButton.addEventListener("click", () => {
-  resetValidation(settings);
+  resetValidation(placeSaveButton, settings);
   openPopup(placePopup);
 });
 
 profileEditInfoButton.addEventListener("click", () => {
   handleProfileInfo();
-  resetValidation(settings);
+  resetValidation(profileSaveButton, settings);
   enableSubmitButton(profileSaveButton, settings);
   openPopup(profilePopup);
 });
@@ -130,6 +127,4 @@ profileForm.addEventListener("submit", saveProfileInfo);
 
 placeForm.addEventListener("submit", handleAddNewCard);
 
-
 initialCards.forEach((card) => renderCardFromArray(createCard(card)));
-

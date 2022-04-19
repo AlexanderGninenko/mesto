@@ -66,11 +66,11 @@ const enableValidation = (config) => {
     });
 };
 
-const resetValidation = (config) => {
+const resetValidation = (button, config) => {
   const errorSpans = Array.from(document.querySelectorAll(config.inputErrorClass));
-  errorSpans.forEach((span) => {
-    span.textContent = "";
-  });
+  errorSpans.forEach((span) => span.textContent = "");
+  button.classList.add(config.inactiveButtonClass);
+  button.disabled = true;
 };
 
 const enableSubmitButton = (button, config) => {
