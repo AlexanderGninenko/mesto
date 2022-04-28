@@ -1,4 +1,6 @@
-import FormValidator from "./validate.js";
+import FormValidator from "./FormValidator.js";
+import Card from './Card.js';
+import initialCards from "./cards.js";
 
 const settings = {
   formSelector: ".popup__form",
@@ -21,17 +23,16 @@ const placeFormValidation = new FormValidator(settings, placeForm);
 
 placeFormValidation.enableValidation();
 
-const template = document.querySelector("#card-template").content;
+const template = "#card-template";
 
 const cardsContainer = document.querySelector(".photo-grid__wrapper");
-const popupList = document.querySelectorAll(".popup");
 
 const profileName = document.querySelector(".profile__name");
 const profileStatus = document.querySelector(".profile__status");
 
 const profilePopup = document.querySelector(".popup_profile");
 const placePopup = document.querySelector(".popup_place");
-const imagePopup = document.querySelector(".popup_image");
+export const imagePopup = document.querySelector(".popup_image");
 
 const placeFormName = placeForm.elements.placeFormName;
 const placeFormLink = placeForm.elements.placeFormLink;
@@ -41,37 +42,12 @@ const profileFormStatus = profileForm.elements.profileFormStatus;
 const cardAddButton = document.querySelector(".profile__add-btn");
 const profileEditInfoButton = document.querySelector(".profile__edit-btn");
 
-const image = document.querySelector(".popup__image");
-const imageDescription = document.querySelector(".popup__image-description");
-
 const closeButtonList = document.querySelectorAll(".popup__close-icon");
-const profileSaveButton = document.querySelector(".popup__save-btn_profile");
-const placeSaveButton = document.querySelector(".popup__save-btn_place");
-
-const createCard = (card) => {
-  const cardItem = template.querySelector(".photo-grid__item").cloneNode(true);
-  const photoImage = cardItem.querySelector(".photo-grid__image");
-  const cardItemTitle = cardItem.querySelector(".photo-grid__title");
-  const likeButton = cardItem.querySelector(".photo-grid__like-btn");
-  const deleteButton = cardItem.querySelector(".photo-grid__delete-btn");
-  likeButton.addEventListener("click", handleLikeClick);
-  deleteButton.addEventListener("click", handleDeleteCard);
-  cardItemTitle.textContent = card.name;
-  photoImage.src = card.link;
-  photoImage.alt = card.name;
-
-  photoImage.addEventListener("click", (e) => {
-    handleImage(e);
-    openPopup(imagePopup);
-  });
-
-  return cardItem;
-};
 
 const handleAddNewCard = (e) => {
   e.preventDefault();
-  const newCard = { name: placeFormName.value, link: placeFormLink.value };
-  renderCardFromArray(createCard(newCard));
+  const newCard = new Card({name: placeFormName.value, link: placeFormLink.value }, template);
+  renderCardFromArray(newCard.generateCard());
   closePopup(placePopup);
   placeForm.reset();
   placeFormValidation.disableSubmitButton();
@@ -82,13 +58,7 @@ const handleProfileInfo = () => {
   profileFormStatus.value = profileStatus.textContent;
 };
 
-const handleImage = (e) => {
-  image.src = e.target.src;
-  image.alt = e.target.alt;
-  imageDescription.textContent = e.target.alt;
-};
-
-const openPopup = (popup) => {
+export const openPopup = (popup) => {
   popup.classList.add("popup_opened");
   document.addEventListener("keydown", handleCloseOnEscapeKey);
   popup.addEventListener("mousedown", closeOnOverlayClick);
@@ -102,17 +72,12 @@ const closePopup = (popup) => {
 
 const renderCardFromArray = (card) => cardsContainer.prepend(card);
 
-const handleDeleteCard = (e) => e.target.closest(".photo-grid__item").remove();
-
 const saveProfileInfo = (e) => {
   e.preventDefault();
   profileName.textContent = profileFormName.value;
   profileStatus.textContent = profileFormStatus.value;
   closePopup(profilePopup);
 };
-
-const handleLikeClick = (e) =>
-  e.target.classList.toggle("photo-grid__like-btn_active");
 
 closeButtonList.forEach((button) =>
   button.addEventListener("click", (e) => {
@@ -148,4 +113,7 @@ profileForm.addEventListener("submit", saveProfileInfo);
 
 placeForm.addEventListener("submit", handleAddNewCard);
 
-initialCards.forEach((card) => renderCardFromArray(createCard(card)));
+initialCards.forEach((card) =>{
+  const newCard = new Card(card, template);
+  renderCardFromArray(newCard.generateCard());
+});
