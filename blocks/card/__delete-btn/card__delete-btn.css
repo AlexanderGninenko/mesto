@@ -1,4 +1,4 @@
-.photo-grid__delete-btn {
+.card__delete-btn {
     background-image: url('../../../images/delete_btn.svg');
     width: 18px;
     height: 19px;
@@ -14,6 +14,6 @@
     transition: .2s;
 }
 
-.photo-grid__delete-btn:hover {
+.card__delete-btn:hover {
     opacity: .6;
 }

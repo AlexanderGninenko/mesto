@@ -1,5 +1,5 @@
 import FormValidator from "./FormValidator.js";
-import Card from './Card.js';
+import Card from "./Card.js";
 import initialCards from "./cards.js";
 
 const settings = {
@@ -23,7 +23,7 @@ const placeFormValidation = new FormValidator(settings, placeForm);
 
 placeFormValidation.enableValidation();
 
-const template = "#card-template";
+const cardSelector = "#card-template";
 
 const cardsContainer = document.querySelector(".photo-grid__wrapper");
 
@@ -42,12 +42,10 @@ const profileFormStatus = profileForm.elements.profileFormStatus;
 const cardAddButton = document.querySelector(".profile__add-btn");
 const profileEditInfoButton = document.querySelector(".profile__edit-btn");
 
-const closeButtonList = document.querySelectorAll(".popup__close-icon");
-
 const handleAddNewCard = (e) => {
   e.preventDefault();
-  const newCard = new Card({name: placeFormName.value, link: placeFormLink.value }, template);
-  renderCardFromArray(newCard.generateCard());
+  const cardData = { name: placeFormName.value, link: placeFormLink.value };
+  renderCardFromArray(cardData);
   closePopup(placePopup);
   placeForm.reset();
   placeFormValidation.disableSubmitButton();
@@ -70,7 +68,14 @@ const closePopup = (popup) => {
   popup.removeEventListener("mousedown", closeOnOverlayClick);
 };
 
-const renderCardFromArray = (card) => cardsContainer.prepend(card);
+const createCard = (cardData) => {
+  const newCard = new Card(cardData, cardSelector);
+  return newCard.generateCard();
+};
+
+const renderCardFromArray = (cardData) => {
+  cardsContainer.prepend(createCard(cardData));
+};
 
 const saveProfileInfo = (e) => {
   e.preventDefault();
@@ -79,16 +84,12 @@ const saveProfileInfo = (e) => {
   closePopup(profilePopup);
 };
 
-closeButtonList.forEach((button) =>
-  button.addEventListener("click", (e) => {
-    const activePopup = document.querySelector(".popup_opened");
-    closePopup(activePopup);
-  })
-);
-
 const closeOnOverlayClick = (e) => {
-  if (e.target === e.currentTarget) {
-    closePopup(e.target);
+  if (
+    e.target === e.currentTarget ||
+    e.target.classList.contains("popup__close-icon")
+  ) {
+    closePopup(e.currentTarget);
   }
 };
 
@@ -113,7 +114,4 @@ profileForm.addEventListener("submit", saveProfileInfo);
 
 placeForm.addEventListener("submit", handleAddNewCard);
 
-initialCards.forEach((card) =>{
-  const newCard = new Card(card, template);
-  renderCardFromArray(newCard.generateCard());
-});
+initialCards.forEach((card) => renderCardFromArray(card));
