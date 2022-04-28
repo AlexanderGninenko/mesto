@@ -1,3 +1,26 @@
+import FormValidator from "./validate.js";
+
+const settings = {
+  formSelector: ".popup__form",
+  inputSelector: ".popup__input",
+  inputErrorClass: ".popup__input-error",
+  submitButtonSelector: ".popup__save-btn",
+  inactiveButtonClass: "popup__save-btn_disabled",
+  inputErrorClassActive: "popup__input_type_error",
+  errorClass: "popup__input-error_active",
+};
+
+const profileForm = document.forms.popupProfileForm;
+const placeForm = document.forms.popupPlaceForm;
+
+const profileFormValidation = new FormValidator(settings, profileForm);
+
+profileFormValidation.enableValidation();
+
+const placeFormValidation = new FormValidator(settings, placeForm);
+
+placeFormValidation.enableValidation();
+
 const template = document.querySelector("#card-template").content;
 
 const cardsContainer = document.querySelector(".photo-grid__wrapper");
@@ -5,9 +28,6 @@ const popupList = document.querySelectorAll(".popup");
 
 const profileName = document.querySelector(".profile__name");
 const profileStatus = document.querySelector(".profile__status");
-
-const profileForm = document.forms.popupProfileForm;
-const placeForm = document.forms.popupPlaceForm;
 
 const profilePopup = document.querySelector(".popup_profile");
 const placePopup = document.querySelector(".popup_place");
@@ -54,6 +74,7 @@ const handleAddNewCard = (e) => {
   renderCardFromArray(createCard(newCard));
   closePopup(placePopup);
   placeForm.reset();
+  placeFormValidation.disableSubmitButton();
 };
 
 const handleProfileInfo = () => {
@@ -113,14 +134,14 @@ const handleCloseOnEscapeKey = (e) => {
 };
 
 cardAddButton.addEventListener("click", () => {
-  resetValidation(placeSaveButton, settings);
+  placeFormValidation.resetValidation();
   openPopup(placePopup);
 });
 
 profileEditInfoButton.addEventListener("click", () => {
   handleProfileInfo();
-  resetValidation(profileSaveButton, settings);
-  enableSubmitButton(profileSaveButton, settings);
+  profileFormValidation.resetValidation();
+  profileFormValidation.enableSubmitButton();
   openPopup(profilePopup);
 });
 profileForm.addEventListener("submit", saveProfileInfo);
