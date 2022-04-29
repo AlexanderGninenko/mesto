@@ -31,7 +31,7 @@ export default class Card {
     this._card
       .querySelector(".card__delete-btn")
       .addEventListener("click", this._handleDeleteCard.bind(this));
-    this._cardImage.addEventListener("click", (e) => this._handleImage(e));
+    this._cardImage.addEventListener("click", this._handleImage.bind(this));
   }
 
   _handleLikeClick() {
@@ -44,14 +44,14 @@ export default class Card {
     this._card.closest(".card").remove();
   }
 
-  _handleImage(e) {
+  _handleImage() {
     const image = document.querySelector(".popup__image");
     const imageDescription = document.querySelector(
       ".popup__image-description"
     );
-    image.src = e.target.src;
-    image.alt = e.target.alt;
-    imageDescription.textContent = e.target.alt;
+    image.src = this._cardImage.src;
+    image.alt = this._cardImage.alt;
+    imageDescription.textContent = this._cardImage.alt;
     openPopup(imagePopup);
   }
 }
