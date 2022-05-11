@@ -30,14 +30,17 @@
 
 /*PHOTO-GRID*/
 @import '../blocks/photo-grid/photo-grid.css';
-@import '../blocks/photo-grid/__image/photo-grid__image.css';
-@import '../blocks/photo-grid/__item/photo-grid__item.css';
-@import '../blocks/photo-grid/__title/photo-grid__title.css';
-@import '../blocks/photo-grid/__description/photo-grid__description.css';
 @import '../blocks/photo-grid/__wrapper/photo-grid__wrapper.css';
-@import '../blocks/photo-grid/__like-btn/photo-grid__like-btn.css';
-@import '../blocks/photo-grid/__like-btn/_active/photo-grid__like-btn_active.css';
-@import '../blocks/photo-grid/__delete-btn/photo-grid__delete-btn.css';
+
+/*CARD*/
+@import '../blocks/card/__image/card__image.css';
+@import '../blocks/card/card.css';
+@import '../blocks/card/__title/card__title.css';
+@import '../blocks/card/__description/card__description.css';
+@import '../blocks/card/__like-btn/card__like-btn.css';
+@import '../blocks/card/__like-btn/_active/card__like-btn_active.css';
+@import '../blocks/card/__delete-btn/card__delete-btn.css';
+
 
 /*FOOTER*/
 @import '../blocks/footer/footer.css';
