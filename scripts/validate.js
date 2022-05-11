@@ -38,11 +38,9 @@ const hasInvalidInput = (inputList) => {
 
 const toggleButtonState = (inputList, buttonElement, config) => {
   if (hasInvalidInput(inputList)) {
-    buttonElement.classList.add(config.inactiveButtonClass);
-    buttonElement.disabled = true;
+    disableSubmitButton(buttonElement, config);
   } else {
-    buttonElement.classList.remove(config.inactiveButtonClass);
-    buttonElement.disabled = false;
+    enableSubmitButton(buttonElement, config);
   }
 };
 
@@ -69,13 +67,17 @@ const enableValidation = (config) => {
 const resetValidation = (button, config) => {
   const errorSpans = Array.from(document.querySelectorAll(config.inputErrorClass));
   errorSpans.forEach((span) => span.textContent = "");
-  button.classList.add(config.inactiveButtonClass);
-  button.disabled = true;
+  disableSubmitButton (button, config);
 };
 
 const enableSubmitButton = (button, config) => {
   button.classList.remove(config.inactiveButtonClass);
   button.disabled = false;
+}
+
+const disableSubmitButton = (button, config) => {
+  button.classList.add(config.inactiveButtonClass);
+  button.disabled = true;
 }
 
 enableValidation(settings);
