@@ -16,7 +16,6 @@ export default class Card {
 
   generateCard() {
     this._card = this._getCardTemplate();
-    console.log(this._card);
     this._cardImage = this._card.querySelector(".card__image");
     this._setEventListeners();
     this._cardImage.src = this._data.link;
