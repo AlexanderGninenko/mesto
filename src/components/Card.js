@@ -1,7 +1,10 @@
 
 export default class Card {
-  constructor(data, cardSelector, api, userId, {handleCardClick, handleLikeClick, handleConfirmDelete}) {
-    this._data = data;
+  constructor(cardSelector, api, userId, {data, handleCardClick, handleLikeClick, handleConfirmDelete}) {
+    this._name = data.name
+    this._link = data.link
+    this._likes = data.likes
+
     this._cardSelector = cardSelector;
 
     this._handleCardClick = handleCardClick;
@@ -9,8 +12,8 @@ export default class Card {
     this._handleConfirmDelete = handleConfirmDelete;
 
     this._api = api;
-    this._id = this._data._id;
-    this._ownerId = this._data.owner._id;
+    this._id = data._id;
+    this._ownerId = data.owner._id;
     this._userId = userId;
   }
 
@@ -26,16 +29,16 @@ export default class Card {
     this._card = this._getCardTemplate();
     this._cardImage = this._card.querySelector(".card__image");
     this._setEventListeners();
-    this._cardImage.src = this._data.link;
-    this._cardImage.alt = this._data.name;
-    this._card.querySelector(".card__title").textContent = this._data.name;
-    this._card.querySelector(".card__like-count").textContent = this._data.likes.length;
+    this._cardImage.src = this._link;
+    this._cardImage.alt = this._name;
+    this._card.querySelector(".card__title").textContent = this._name;
+    this._card.querySelector(".card__like-count").textContent = this._likes.length;
     
     if(!(this._ownerId === this._userId)) {
       this._card.querySelector('.card__delete-btn').style.display = 'none';
     }
 
-    if(this._data.likes.find((obj) => this._userId === obj._id)) {
+    if(this._likes.find((obj) => this._userId === obj._id)) {
       this._card.querySelector('.card__like-btn').classList.add('card__like-btn_active')
     }
 
@@ -89,14 +92,4 @@ export default class Card {
     this._card.closest('.card').remove();
   }
 }
-
-  // _handleLikeClick() {
-  //   this._card
-  //     .querySelector(".card__like-btn")
-  //     .classList.toggle("card__like-btn_active");
-  // }
-
-  // _handleDeleteCard() {
-  //   this._card.closest(".card").remove();
-  // }
 

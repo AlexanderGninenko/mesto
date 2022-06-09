@@ -1,6 +1,5 @@
 import FormValidator from "../components/FormValidator.js";
 import Card from "../components/Card.js";
-import initialCards from "../utils/constants.js";
 import "./index.css";
 import Section from "../components/Section.js";
 import UserInfo from "../components/UserInfo.js";
@@ -23,8 +22,6 @@ import {
   placePopupSelector,
   imagePopupSelector,
   avatarPopupSelector,
-  placeFormNameSelector,
-  placeFormLinkSelector,
   profileFormNameSelector,
   profileFormStatusSelector,
   cardAddButton,
@@ -83,13 +80,13 @@ const placePopup = new PopupWithForm(placePopupSelector, (newValues) => {
   api
     .addUserCard(newValues)
     .then((data) => {
-      const card = createCard(data); //{ name: data.value, link: data.value });
+      const card = createCard(data);
       cardsList.addItem(card);
       placeFormValidation.disableSubmitButton();
       placePopup.close();
     })
     .catch((err) => console.log(err))
-    .finally(() => placePopup.renderLoading(true));
+    .finally(() => placePopup.renderLoading(false));
 });
 
 placePopup.setEventListeners();
@@ -109,7 +106,8 @@ const avatarPopup = new PopupWithForm(avatarPopupSelector, (newValues) => {
 avatarPopup.setEventListeners();
 
 const createCard = (data) => {
-  const card = new Card(data, cardSelector, api, userId, {
+  const card = new Card(cardSelector, api, userId, {
+    data: data,
     handleCardClick: () => {
       imagePopup.open(data);
     },
@@ -117,13 +115,17 @@ const createCard = (data) => {
       card.handleLikeCard();
     },
     handleConfirmDelete: () => {
+      
       confirmDeletePopup.setSubmitAction(() => {
         confirmDeletePopup.renderLoading(true);
         api.delete(data._id).then(() => {
           card.handleDeleteCard();
           confirmDeletePopup.close();
-        });
-      });
+        })
+          .catch((err) => console.log(err))
+          .finally( () => confirmDeletePopup.renderLoading(false))
+      })
+      confirmDeletePopup.open()
     },
   });
   return card.generateCard();

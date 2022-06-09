@@ -32,8 +32,8 @@ export default class Api {
         method: 'PATCH',
         headers: this._headers,
         body: JSON.stringify({
-          name: userData.name,
-          about: userData.about
+          name: userData.profileFormName,
+          about: userData.profileFormStatus
         })
       })
       .then(this._checkResponse)
