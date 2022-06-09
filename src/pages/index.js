@@ -47,7 +47,7 @@ placeFormValidation.enableValidation();
 const api = new Api({
   url: "https://mesto.nomoreparties.co/v1/cohort-42",
   headers: {
-    authorization: "c56e30dc-2883-4270-a59e-b2f7bae969c6",
+    authorization: "15b7f773-dbdf-4b9e-9380-ba8374828004",
     "Content-Type": "application/json",
   },
 });
@@ -57,7 +57,7 @@ confirmDeletePopup.setEventListeners();
 
 const userInfo = new UserInfo({
   name: profileNameSelector,
-  status: profileStatusSelector,
+  about: profileStatusSelector,
   avatar: profileAvatarSelector,
 });
 
@@ -94,7 +94,7 @@ const placePopup = new PopupWithForm(placePopupSelector, (newValues) => {
 
 placePopup.setEventListeners();
 
-const avatarPopup = new PopupWithForm(avatarPopupSelector, () => {
+const avatarPopup = new PopupWithForm(avatarPopupSelector, (newValues) => {
   avatarPopup.renderLoading(true);
   api
     .handleUserAvatar(newValues)
@@ -148,7 +148,7 @@ cardAddButton.addEventListener("click", () => {
 profileEditInfoButton.addEventListener("click", () => {
   const userData = userInfo.getUserInfo();
   profileFormNameSelector.value = userData.name;
-  profileFormStatusSelector.value = userData.status;
+  profileFormStatusSelector.value = userData.about;
   profileFormValidation.resetValidation();
   profileFormValidation.enableSubmitButton();
   profilePopup.open();

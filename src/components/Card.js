@@ -61,8 +61,8 @@ export default class Card {
   }
 
   handleLikeCard() {
-    const likeButton = this._view.querySelector('.card__like-btn');
-    const likeCount = this._view.querySelector('.card__like-count');
+    const likeButton = this._card.querySelector('.card__like-btn');
+    const likeCount = this._card.querySelector('.card__like-count');
 
     if(!(likeButton.classList.contains('card__like-btn_active'))) {
       this._api.like(this._id)
