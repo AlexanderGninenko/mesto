@@ -6,19 +6,35 @@ import Section from "../components/Section.js";
 import UserInfo from "../components/UserInfo.js";
 import PopupWithImage from "../components/PopupWithImage.js";
 import PopupWithForm from "../components/PopupWithForm.js";
+import Api from './../components/Api';
+import PopupWithConfirm from './../components/PopupWithConfirm';
 
-const settings = {
-  formSelector: ".popup__form",
-  inputSelector: ".popup__input",
-  inputErrorClass: ".popup__input-error",
-  submitButtonSelector: ".popup__save-btn",
-  inactiveButtonClass: "popup__save-btn_disabled",
-  inputErrorClassActive: "popup__input_type_error",
-  errorClass: "popup__input-error_active",
-};
+import {
+  settings,
+  profileForm,
+  placeForm,
+  avatarForm,
+  cardSelector,
+  cardsContainer,
+  profileNameSelector,
+  profileStatusSelector,
+  profileAvatarSelector,
+  profilePopupSelector,
+  placePopupSelector,
+  imagePopupSelector,
+  avatarPopupSelector,
+  placeFormNameSelector,
+  placeFormLinkSelector,
+  profileFormNameSelector,
+  profileFormStatusSelector,
+  cardAddButton,
+  profileEditInfoButton,
+  avatarEditButton,
+  popupDeleteConfirmSelector
+} from '../utils/constants.js';
 
-const profileForm = document.forms.popupProfileForm;
-const placeForm = document.forms.popupPlaceForm;
+const avatarEditFormValidation = new FormValidator(settings, avatarForm);
+avatarEditFormValidation.enableValidation();
 
 const profileFormValidation = new FormValidator(settings, profileForm);
 
@@ -28,57 +44,95 @@ const placeFormValidation = new FormValidator(settings, placeForm);
 
 placeFormValidation.enableValidation();
 
-const cardSelector = "#card-template";
 
-const cardsContainer = ".photo-grid__wrapper";
+const api = new Api({
+  url: "https://mesto.nomoreparties.co/v1/cohort-42",
+  headers: {
+    authorization: "c56e30dc-2883-4270-a59e-b2f7bae969c6",
+    'Content-Type': "application/json"
+  }
+})
 
-const profileNameSelector = ".profile__name";
-const profileStatusSelector = ".profile__status";
+const confirmDeletePopup = new PopupWithConfirm (popupDeleteConfirmSelector);
+confirmDeletePopup.setEventListeners();
 
-const profilePopupSelector = ".popup_profile";
-const placePopupSelector = ".popup_place";
-const imagePopupSelector = ".popup_image";
-
-const placeFormNameSelector = document.querySelector('.popup__input_place_name');
-const placeFormLinkSelector = document.querySelector('.popup__input_place_link');
-const profileFormNameSelector = document.querySelector('.popup__input_profile_name');
-const profileFormStatusSelector = document.querySelector('.popup__input_profile_status');
-
-const cardAddButton = document.querySelector(".profile__add-btn");
-const profileEditInfoButton = document.querySelector(".profile__edit-btn");
-
-const userInfo = new UserInfo({name: profileNameSelector, status: profileStatusSelector});
+const userInfo = new UserInfo({name: profileNameSelector, status: profileStatusSelector, avatar: profileAvatarSelector});
 
 const imagePopup = new PopupWithImage(imagePopupSelector);
 imagePopup.setEventListeners();
 
-const profilePopup = new PopupWithForm(profilePopupSelector, () => {
-  userInfo.setUserInfo({
-    name : profileFormNameSelector.value,
-    status : profileFormStatusSelector.value
-  });
-  profilePopup.close();
-})
+const profilePopup = new PopupWithForm(profilePopupSelector, (newValues) => {
+  profilePopup.renderLoading(true);
+  api.setUserInfoApi(newValues)
+    .then((data) => {
+      userInfo.setUserInfo(data);
+      profilePopup.close();
+    })
+    .catch((err) => console.log(err))
+    .finally( () => profilePopup.renderLoading(false))
+    })
+  
 profilePopup.setEventListeners();
 
-const placePopup = new PopupWithForm(placePopupSelector, () => {
-  const card = createCard({
-    name: placeFormNameSelector.value,
-    link: placeFormLinkSelector.value
-  });
+const placePopup = new PopupWithForm(placePopupSelector, (newValues) => {
+  placePopup.renderLoading(true);
+  api.addUserCard(newValues)
+    .then( (data) => {
+      const card = createCard(data);//{ name: data.value, link: data.value });
+      cardsList.addItem(card);
+      placeFormValidation.disableSubmitButton();
+      placePopup.close();
+    })
+    .catch((err) => console.log(err))
+    .finally( () => placePopup.renderLoading(true))
+    })
   
-  cardsList.addItem(card);
-  placeFormValidation.disableSubmitButton();
-  placePopup.close();
-})
 placePopup.setEventListeners();
 
+const avatarPopup = new PopupWithForm(avatarPopupSelector, () => {
+  avatarPopup.renderLoading(true);
+  api.handleUserAvatar(newValues)
+    .then((data) => {
+      userInfo.setUserAvatar(data);
+      avatarEditFormValidation.disableSubmitButton();
+      avatarPopup.close();
+    })
+    .catch((err) => console.log(err))
+    .finally( () => avatarPopup.renderLoading(false));
+})
+avatarPopup.setEventListeners();
+
 const createCard = (data) => {
-  const card = new Card(data, cardSelector, {handleCardClick: ()=>{
-    imagePopup.open(data);
-  }});
+  const card = new Card(data, cardSelector, api, userId, {
+    handleCardClick: ()=>{
+      imagePopup.open(data);
+  },
+    handleLikeClick: () => {
+      card.handleLikeCard()
+    },
+    handleConfirmDelete: () => {
+      confirmDeletePopup.setSubmitAction(()=> {
+        confirmDeletePopup.renderLoading(true);
+        api.delete(data._id)
+          .then( () => {
+            card.handleRemoveCard();
+            confirmDeletePopup.close();
+          })
+      })
+    }
+
+});
   return card.generateCard();
 };
+
+const cardsList = new Section({
+  renderer: (item) => {
+    const card = createCard(item);
+    cardsList.addItem(card);
+  }
+},
+cardsContainer
+);
 
 cardAddButton.addEventListener("click", () => {
   placeFormValidation.resetValidation();
@@ -95,14 +149,18 @@ profileEditInfoButton.addEventListener("click", () => {
   profilePopup.open();
 });
 
-const cardsList = new Section({
-  items: initialCards,
-  renderer: (item) => {
-    const card = createCard(item);
-    cardsList.addItem(card);
-  }
-},
-cardsContainer
-)
+avatarEditButton.addEventListener('click', () => {
+  avatarEditFormValidation.resetValidation();
+  avatarPopup.open();
+})
 
-cardsList.renderItems();
+let userId;
+
+api.getAllNeededData() 
+  .then(( [cards, userData] ) => {
+    userInfo.setUserInfo(userData);
+    userId = userData._id;
+    
+    cardsList.renderItems(cards)
+  })
+  .catch((err) => console.log(err))
