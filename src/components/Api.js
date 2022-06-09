@@ -27,7 +27,7 @@ export default class Api {
       .then(this._checkResponse)
     }
   
-    setUserInfoApi(userData) {
+    sendUserInfo(userData) {
       return fetch(this._url + '/users/me', {
         method: 'PATCH',
         headers: this._headers,

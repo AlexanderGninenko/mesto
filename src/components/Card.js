@@ -85,7 +85,7 @@ export default class Card {
     }
   }
 
-  handleRemoveCard() {
+  handleDeleteCard() {
     this._card.closest('.card').remove();
   }
 }
